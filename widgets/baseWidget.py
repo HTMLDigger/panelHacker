@@ -1,16 +1,12 @@
 import logging
 
-try:
-    from PySide2 import QtWidgets as QtGui
-except ImportError:
-    from PySide import QtGui
+from PySide2 import QtWidgets
 
 
-class BaseWidget(QtGui.QWidget):
+class BaseWidget(QtWidgets.QWidget):
     def __init__(self):
-        super(BaseWidget, self).__init__()
-
         self.initialized = False
+        super(BaseWidget, self).__init__()
 
     def initialize(self):
         """

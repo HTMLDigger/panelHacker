@@ -18,7 +18,7 @@ class BasePanel(QtCore.QObject):
         raise NotImplementedError()
 
     @property
-    def preferenceType(self):
+    def panelType(self):
         """
         Must be implemented by the child class and return the preference type
         """
@@ -26,7 +26,7 @@ class BasePanel(QtCore.QObject):
 
     def updatePreferences(self, preference):
 
-        if preference.preferenceType != self.preferenceType or not preference.key:
+        if preference.panelType != self.panelType or not preference.key:
             return
 
         attrs = preference.key.split('.')

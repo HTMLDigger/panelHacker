@@ -1,17 +1,27 @@
 from globals import Globals
 from .base import Preference
-from widgets import colourCheck
+from widgets import colorChip
 
 
-class ColourPreference(Preference):
+class ColorPreference(Preference):
 
     def __init__(self, key, name=None, value=None, **kwargs):
-        super(ColourPreference, self).__init__(key, name, value, **kwargs)
+        super(ColorPreference, self).__init__(key, name, value, **kwargs)
 
-        self.default = kwargs.get('default')
+        self._default = kwargs.get('default')
         self.callable = kwargs.get('callable', None)
-        self.colourChip = colourCheck.ColourChip(self.name)
-        self.colourChip.setToolTip(kwargs.get('toolTip', self.key))
+        self.colorChip = colorChip.ColorChip(self.name, color=self.default)
+        self.colorChip.setToolTip(kwargs.get('toolTip', self.key))
+
+    @property
+    def default(self):
+        return self._default
+
+    @default.setter
+    def default(self, value):
+
+        self.colorChip.defaultColor = value
+        self._default = value
 
     @property
     def preferenceType(self):
@@ -19,15 +29,15 @@ class ColourPreference(Preference):
 
     def initialize(self):
 
-        previousValue = Globals.preferences.get(self.key, None)
+        previousValue = Globals.sePreferences.get(self.key, None)
         if previousValue:
             if isinstance(previousValue, dict):
-                previousValue = ColourPreference(**previousValue)
+                previousValue = ColorPreference(**previousValue)
 
             previousValue = previousValue.value
-        self.colourChip.setColour(previousValue or self.default)
+        self.colorChip.setColor(previousValue or self.default)
         if self.callable:
-            self.colourChip.colourChanged.connect(self.update)
+            self.colorChip.colorChanged.connect(self.update)
 
     def update(self, value):
 

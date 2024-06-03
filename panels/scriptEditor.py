@@ -3,7 +3,7 @@ import traceback
 import keyPressEventManager
 
 from panels import basePanel
-from panels.preferences.scriptEditor import ColourPreference
+from panels.preferences.scriptEditor import ColorPreference
 from globals import Globals
 from highlighters import syntaxPython
 from PySide2 import QtGui, QtWidgets, QtCore
@@ -48,11 +48,11 @@ class ScriptEditor(basePanel.BasePanel):
 
     def updatePreferences(self, preference):
         if isinstance(preference, dict):
-            preference = ColourPreference(**preference)
+            preference = ColorPreference(**preference)
         super(ScriptEditor, self).updatePreferences(preference)
 
     @property
-    def preferenceType(self):
+    def panelType(self):
         return Globals.scriptEditorType
 
     @property

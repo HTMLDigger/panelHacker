@@ -1,8 +1,26 @@
+import nuke
 import json
 import os
 import copy
-import utilities
 from panels.preferences.base import PreferenceEncoder
+
+
+def getUserDir():
+    """
+    Returns:
+        str: Path to the current users .nuke folder
+    """
+
+    userDir = os.getenv('NUKE_USER_DIR', None)
+
+    if not userDir:
+        username = os.getenv('USERNAME', '.nuke')
+        for path in nuke.pluginPath():
+            if '.nuke' in path and username in path:
+                userDir = path
+                break
+
+    return userDir
 
 
 class _Globals(object):
@@ -20,7 +38,7 @@ class _Globals(object):
     def preferencePath(self):
 
         if self._preferencePath is None:
-            userDir = utilities.getUserDir()
+            userDir = getUserDir()
             if not userDir:
                 return None
 

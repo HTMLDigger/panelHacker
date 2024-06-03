@@ -1,11 +1,16 @@
 from panels import basePanel
 from globals import Globals
-from panels.preferences.scriptEditor import ColourPreference
+from panels.preferences.scriptEditor import ColorPreference
 from highlighters import syntaxPython
 
 
 class Preferences(basePanel.BasePanel):
+    # This should be updated with all the required attributes for the preferences panel that you
+    # are wanting to hack
     requiredAttributes = ['scriptEditorLayout']
+    # We set this to False so that the preferences are always reloaded when the panel is opened.
+    # Since the preference panel is not persistent if we cached it we would run into problems with
+    # certain widgets no longer being present
     cacheWrapper = False
 
     def __init__(self, panel=None, hackerParent=None):
@@ -15,47 +20,59 @@ class Preferences(basePanel.BasePanel):
 
         self.initialized = False
         self._scriptEditorLayout = None
-        self.keywordPreference = ColourPreference('highlighter.keywordHighlighter',
-                                                  name='Keyword Highlighter',
-                                                  toolTip='Highlighter color for Python keywords')
-        self.classNamePreference = ColourPreference('highlighter.classNameHighlighter',
-                                                    name='Class Name Highlighter',
-                                                    toolTip='Highlighter color for Python class names')
-        self.commentPreference = ColourPreference('highlighter.commentHighlighter',
-                                                  name='Comment Highlighter',
-                                                  toolTip='Highlighter color for Python comments')
-        self.bracketPreference = ColourPreference('highlighter.bracketHighlighter',
-                                                  name='Bracket Highlighter',
-                                                  toolTip='Highlighter color for Python brackets')
-        self.methodPreference = ColourPreference('highlighter.methodHighlighter',
-                                                 name='Method Highlighter',
-                                                 toolTip='Highlighter color for Python methods')
-        self.stringPreference = ColourPreference('highlighter.stringHighlighter',
-                                                 name='String Highlighter',
-                                                 toolTip='Highlighter color for Python strings')
-        self.dunderPreference = ColourPreference('highlighter.dunderHighlighter',
-                                                 name='Dunder Highlighter',
-                                                 toolTip='Highlighter color for Python dunder methods')
-        self.selfPreference = ColourPreference('highlighter.selfHighlighter',
-                                               name='Self Highlighter',
-                                               toolTip='Highlighter color for Python self')
-        self.builtInPreference = ColourPreference('highlighter.builtInHighlighter',
-                                                  name='Built In Highlighter',
-                                                  toolTip='Highlighter color for Python built in functions')
-        self.numberPreference = ColourPreference('highlighter.numberHighlighter',
-                                                 name='Number Highlighter',
-                                                 toolTip='Highlighter color for Python numbers')
 
-        self.preferences = [self.keywordPreference,
-                            self.classNamePreference,
-                            self.commentPreference,
-                            self.bracketPreference,
-                            self.methodPreference,
-                            self.stringPreference,
-                            self.dunderPreference,
-                            self.selfPreference,
-                            self.builtInPreference,
-                            self.numberPreference]
+        # Prefixing anything related to the script editor with se
+        self.seKeywordPreference = ColorPreference(
+            'highlighter.keywordHighlighter',
+            name='Keyword Highlighter',
+            toolTip='Highlighter color for Python keywords')
+        self.seClassNamePreference = ColorPreference(
+            'highlighter.classNameHighlighter',
+            name='Class Name Highlighter',
+            toolTip='Highlighter color for Python class names')
+        self.seCommentPreference = ColorPreference(
+            'highlighter.commentHighlighter',
+            name='Comment Highlighter',
+            toolTip='Highlighter color for Python comments')
+        self.seBracketPreference = ColorPreference(
+            'highlighter.bracketHighlighter',
+            name='Bracket Highlighter',
+            toolTip='Highlighter color for Python brackets')
+        self.seMethodPreference = ColorPreference(
+            'highlighter.methodHighlighter',
+            name='Method Highlighter',
+            toolTip='Highlighter color for Python methods')
+        self.seStringPreference = ColorPreference(
+            'highlighter.stringHighlighter',
+            name='String Highlighter',
+            toolTip='Highlighter color for Python strings')
+        self.seDunderPreference = ColorPreference(
+            'highlighter.dunderHighlighter',
+            name='Dunder Highlighter',
+            toolTip='Highlighter color for Python dunder methods')
+        self.seSelfPreference = ColorPreference(
+            'highlighter.selfHighlighter',
+            name='Self Highlighter',
+            toolTip='Highlighter color for Python self')
+        self.seBuiltInPreference = ColorPreference(
+            'highlighter.builtInHighlighter',
+            name='Built In Highlighter',
+            toolTip='Highlighter color for Python built in functions')
+        self.seNumberPreference = ColorPreference(
+            'highlighter.numberHighlighter',
+            name='Number Highlighter',
+            toolTip='Highlighter color for Python numbers')
+
+        self.sePreferences = [self.seKeywordPreference,
+                              self.seClassNamePreference,
+                              self.seCommentPreference,
+                              self.seBracketPreference,
+                              self.seMethodPreference,
+                              self.seStringPreference,
+                              self.seDunderPreference,
+                              self.seSelfPreference,
+                              self.seBuiltInPreference,
+                              self.seNumberPreference]
 
         self._preferencePath = None
 
@@ -64,13 +81,15 @@ class Preferences(basePanel.BasePanel):
         if self.initialized:
             return
 
-        for preference in self.preferences:
+        # Add the script editor preferences to the script editor preference in the default
+        # Nuke preference panel
+        for preference in self.sePreferences:
             defaultKey = preference.key.split('.')[-1] + 'Default'
             preference.default = getattr(syntaxPython.PythonHighlighter, defaultKey)
             preference.callable = self.preferenceUpdated
             preference.initialize()
             if self.panel:
-                self.scriptEditorLayout.addWidget(preference.colourChip)
+                self.scriptEditorLayout.addWidget(preference.colorChip)
 
         self.initialized = True
 
@@ -90,7 +109,7 @@ class Preferences(basePanel.BasePanel):
             stackedLayout = self.panel.layout().itemAt(0).widget().layout()
             stackedWidget = stackedLayout.itemAt(1).widget()
             self._scriptEditorLayout = stackedWidget.layout().itemAt(21).widget().layout()
-            
+
         return self._scriptEditorLayout
 
     def eventFilter(self, widget, event):
@@ -107,5 +126,5 @@ class Preferences(basePanel.BasePanel):
         instance = cls()
         parentInstance = parentInstance or instance
         instance.initialize()
-        for preference in instance.preferences:
+        for preference in instance.sePreferences:
             parentInstance.updatePreferences(preference)

@@ -41,7 +41,7 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
         self._pythonBuiltIns = None
         self._keywords = None
 
-        # Set Colour defaults
+        # Set Color defaults
         self._keywordHighlighter = self.keywordHighlighterDefault
         self._classNameHighlighter = self.classNameHighlighterDefault
         self._commentHighlighter = self.commentHighlighterDefault
@@ -84,14 +84,14 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
     def keywordHighlighter(self):
         """
         Returns:
-            list[int, int ,int]: rgb colour value for keywords
+            list[int, int ,int]: rgb color value for keywords
         """
         return self._keywordHighlighter
 
     @keywordHighlighter.setter
     def keywordHighlighter(self, value):
         """
-        Updates the colour value and forces a refresh of the highlighting
+        Updates the color value and forces a refresh of the highlighting
         """
         self._keywordHighlighter = value
         self.refresh()
@@ -100,14 +100,14 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
     def classNameHighlighter(self):
         """
         Returns:
-            list[int, int ,int]: rgb colour value for class names
+            list[int, int ,int]: rgb color value for class names
         """
         return self._classNameHighlighter
 
     @classNameHighlighter.setter
     def classNameHighlighter(self, value):
         """
-        Updates the colour value and forces a refresh of the highlighting
+        Updates the color value and forces a refresh of the highlighting
         """
         self._classNameHighlighter = value
         self.refresh()
@@ -116,14 +116,14 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
     def commentHighlighter(self):
         """
         Returns:
-            list[int, int ,int]: rgb colour value for comments
+            list[int, int ,int]: rgb color value for comments
         """
         return self._commentHighlighter
 
     @commentHighlighter.setter
     def commentHighlighter(self, value):
         """
-        Updates the colour value and forces a refresh of the highlighting
+        Updates the color value and forces a refresh of the highlighting
         """
         self._commentHighlighter = value
         self.refresh()
@@ -132,14 +132,14 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
     def bracketHighlighter(self):
         """
         Returns:
-            list[int, int ,int]: rgb colour value for brackets
+            list[int, int ,int]: rgb color value for brackets
         """
         return self._bracketHighlighter
 
     @bracketHighlighter.setter
     def bracketHighlighter(self, value):
         """
-        Updates the colour value and forces a refresh of the highlighting
+        Updates the color value and forces a refresh of the highlighting
         """
         self._bracketHighlighter = value
         self.refresh()
@@ -148,14 +148,14 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
     def methodHighlighter(self):
         """
         Returns:
-            list[int, int ,int]: rgb colour value for method names
+            list[int, int ,int]: rgb color value for method names
         """
         return self._methodHighlighter
 
     @methodHighlighter.setter
     def methodHighlighter(self, value):
         """
-        Updates the colour value and forces a refresh of the highlighting
+        Updates the color value and forces a refresh of the highlighting
         """
         self._methodHighlighter = value
         self.refresh()
@@ -164,14 +164,14 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
     def stringHighlighter(self):
         """
         Returns:
-            list[int, int ,int]: rgb colour value for strings
+            list[int, int ,int]: rgb color value for strings
         """
         return self._stringHighlighter
 
     @stringHighlighter.setter
     def stringHighlighter(self, value):
         """
-        Updates the colour value and forces a refresh of the highlighting
+        Updates the color value and forces a refresh of the highlighting
         """
         self._stringHighlighter = value
         self.refresh()
@@ -180,14 +180,14 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
     def dunderHighlighter(self):
         """
         Returns:
-            list[int, int ,int]: rgb colour value for dunder methods ie: __init__
+            list[int, int ,int]: rgb color value for dunder methods ie: __init__
         """
         return self._dunderHighlighter
 
     @dunderHighlighter.setter
     def dunderHighlighter(self, value):
         """
-        Updates the colour value and forces a refresh of the highlighting
+        Updates the color value and forces a refresh of the highlighting
         """
         self._dunderHighlighter = value
         self.refresh()
@@ -196,14 +196,14 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
     def selfHighlighter(self):
         """
         Returns:
-            list[int, int ,int]: rgb colour value for self
+            list[int, int ,int]: rgb color value for self
         """
         return self._selfHighlighter
 
     @selfHighlighter.setter
     def selfHighlighter(self, value):
         """
-        Updates the colour value and forces a refresh of the highlighting
+        Updates the color value and forces a refresh of the highlighting
         """
         self._selfHighlighter = value
         self.refresh()
@@ -212,14 +212,14 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
     def builtInHighlighter(self):
         """
         Returns:
-            list[int, int ,int]: rgb colour value for python builtins ie: int, object, etc
+            list[int, int ,int]: rgb color value for python builtins ie: int, object, etc
         """
         return self._builtInHighlighter
 
     @builtInHighlighter.setter
     def builtInHighlighter(self, value):
         """
-        Updates the colour value and forces a refresh of the highlighting
+        Updates the color value and forces a refresh of the highlighting
         """
         self._builtInHighlighter = value
         self.refresh()
@@ -228,14 +228,14 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
     def numberHighlighter(self):
         """
         Returns:
-            list[int, int ,int]: rgb colour value for numbers
+            list[int, int ,int]: rgb color value for numbers
         """
         return self._numberHighlighter
 
     @numberHighlighter.setter
     def numberHighlighter(self, value):
         """
-        Updates the colour value and forces a refresh of the highlighting
+        Updates the color value and forces a refresh of the highlighting
         """
         self._numberHighlighter = value
         self.refresh()
@@ -292,7 +292,7 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
 
     def refresh(self):
         """
-        Refresh the highlighting to ensure all colours are up to date
+        Refresh the highlighting to ensure all colors are up to date
         """
         self._highlighters = None
         self.rehighlight()
@@ -314,18 +314,18 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
 
     def getTextFormatter(self, color, style=None):
         """
-        Creates a QtGui.QTextCharFormat for the given colour
+        Creates a QtGui.QTextCharFormat for the given color
         Args:
-            color (list[int, int ,int]): list with 3 rgb values for the colour to use
+            color (list[int, int ,int]): list with 3 rgb values for the color to use
             style (str|optional): The text style to set for the formatter ie: bold, italic
 
         Returns:
 
         """
-        colour = QtGui.QColor()
-        colour.setRgb(*color)
+        qtColor = QtGui.QColor()
+        qtColor.setRgb(*color)
         textFormat = QtGui.QTextCharFormat()
-        textFormat.setForeground(colour)
+        textFormat.setForeground(qtColor)
 
         if style == self.styleBold:
             textFormat.setFontWeight(QtGui.QFont.Bold)
