@@ -21,6 +21,7 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
 
     keywordHighlighterDefault = [255, 140, 0]
     classNameHighlighterDefault = [201, 201, 201]
+    operatorHighlighterDefault = [201, 201, 201]
     commentHighlighterDefault = [115, 115, 115]
     bracketHighlighterDefault = [255, 208, 0]
     methodHighlighterDefault = [255, 224, 138]
@@ -44,6 +45,7 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
         # Set Color defaults
         self._keywordHighlighter = self.keywordHighlighterDefault
         self._classNameHighlighter = self.classNameHighlighterDefault
+        self._operatorHighlighter = self.operatorHighlighterDefault
         self._commentHighlighter = self.commentHighlighterDefault
         self._bracketHighlighter = self.bracketHighlighterDefault
         self._methodHighlighter = self.methodHighlighterDefault
@@ -110,6 +112,22 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
         Updates the color value and forces a refresh of the highlighting
         """
         self._classNameHighlighter = value
+        self.refresh()
+
+    @property
+    def operatorHighlighter(self):
+        """
+        Returns:
+            list[int, int ,int]: rgb color value for operators
+        """
+        return self._operatorHighlighter
+
+    @operatorHighlighter.setter
+    def operatorHighlighter(self, value):
+        """
+        Updates the color value and forces a refresh of the highlighting
+        """
+        self._operatorHighlighter = value
         self.refresh()
 
     @property
@@ -272,7 +290,7 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
                                   self.getTextFormatter(self.keywordHighlighter)) for item in
                                  self.keywords])
             highlighters.extend([(r'{0}'.format(item), 0,
-                                  self.getTextFormatter(self.classNameHighlighter)) for item in
+                                  self.getTextFormatter(self.operatorHighlighter)) for item in
                                  self.operators])
             highlighters.extend([(r'{0}'.format(item), 0,
                                   self.getTextFormatter(self.bracketHighlighter)) for item in
@@ -303,6 +321,7 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
         """
         self.keywordHighlighter = self.keywordHighlighterDefault
         self.classNameHighlighter = self.classNameHighlighterDefault
+        self.operatorNameHighlighter = self.operatorHighlighterDefault
         self.commentHighlighter = self.commentHighlighterDefault
         self.bracketHighlighter = self.bracketHighlighterDefault
         self.methodHighlighter = self.methodHighlighterDefault

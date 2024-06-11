@@ -25,8 +25,15 @@ class BasePanel(QtCore.QObject):
         raise NotImplementedError()
 
     def updatePreferences(self, preference):
+        """
 
-        if preference.panelType != self.panelType or not preference.key:
+        Args:
+            preference:
+
+        Returns:
+
+        """
+        if preference.preferenceType != self.panelType or not preference.key:
             return
 
         attrs = preference.key.split('.')

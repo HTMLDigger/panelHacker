@@ -5,8 +5,8 @@ from PySide2 import QtWidgets
 
 class BaseWidget(QtWidgets.QWidget):
     def __init__(self):
-        self.initialized = False
         super(BaseWidget, self).__init__()
+        self.initialized = False
 
     def initialize(self):
         """

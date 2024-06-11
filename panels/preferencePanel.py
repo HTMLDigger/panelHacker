@@ -30,6 +30,10 @@ class Preferences(basePanel.BasePanel):
             'highlighter.classNameHighlighter',
             name='Class Name Highlighter',
             toolTip='Highlighter color for Python class names')
+        self.seOperatorPreference = ColorPreference(
+            'highlighter.operatorHighlighter',
+            name='Operator Highlighter',
+            toolTip='Highlighter color for Python operators')
         self.seCommentPreference = ColorPreference(
             'highlighter.commentHighlighter',
             name='Comment Highlighter',
@@ -65,6 +69,7 @@ class Preferences(basePanel.BasePanel):
 
         self.sePreferences = [self.seKeywordPreference,
                               self.seClassNamePreference,
+                              self.seOperatorPreference,
                               self.seCommentPreference,
                               self.seBracketPreference,
                               self.seMethodPreference,
@@ -99,7 +104,7 @@ class Preferences(basePanel.BasePanel):
         self.hackerParent.preferenceUpdated.emit(preference)
 
     @property
-    def preferenceType(self):
+    def panelType(self):
         return Globals.preferencesType
 
     @property

@@ -1,3 +1,6 @@
+import nuke
+import traceback
+
 from PySide2 import QtGui, QtCore
 
 
@@ -5,7 +8,6 @@ class KeyPressEventManager(QtCore.QObject):
 
     def __init__(self):
         super(KeyPressEventManager, self).__init__()
-
         self.sequences = dict()
 
     def registerSequence(self, sequence, action, **kwargs):
@@ -30,7 +32,13 @@ class KeyPressEventManager(QtCore.QObject):
                             action(**kwargs)
                         else:
                             action()
+
+                    # Open-ended exception handling as we don't know what errors we might get here
+                    # But we ensure to print out the error
                     except Exception:
+                        error = traceback.format_exc()
+                        for line in error.split('\n'):
+                            nuke.tprint(f'[Keypress Manager Error] {line}')
                         return False
 
                     return True

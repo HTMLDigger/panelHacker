@@ -12,10 +12,19 @@ class Preference(QtCore.QObject):
         self.value = value or None
 
     def __reduce__(self):
+        """
+        Returns:
+            tuple: A tuple containing the class and the arguments to be passed to the class
+            constructor.
+        """
         return (Preference, (self.key, self.name, self.value,),)
 
     @property
     def preferenceType(self):
+        """
+        Returns:
+            str: The type of the preference.
+        """
         raise NotImplementedError()
 
     def initialize(self):

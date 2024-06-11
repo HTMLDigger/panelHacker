@@ -1,4 +1,3 @@
-import nuke
 import json
 import os
 import copy
@@ -14,11 +13,8 @@ def getUserDir():
     userDir = os.getenv('NUKE_USER_DIR', None)
 
     if not userDir:
-        username = os.getenv('USERNAME', '.nuke')
-        for path in nuke.pluginPath():
-            if '.nuke' in path and username in path:
-                userDir = path
-                break
+        userDir = os.path.expanduser('~')
+        userDir = os.path.join(userDir, '.nuke').replace('\\', '/')
 
     return userDir
 
