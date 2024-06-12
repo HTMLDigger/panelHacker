@@ -28,12 +28,23 @@ class Preference(QtCore.QObject):
         raise NotImplementedError()
 
     def initialize(self):
-
+        """
+        Initializes the preference.  Since the preference will be added to the preference panel,
+        this is where you will set up the UI elements for the preference along with any signals
+        """
         raise NotImplementedError()
 
 
 class PreferenceEncoder(json.JSONEncoder):
     def default(self, instance):
+        """
+        This ensures that the preference object is serialized correctly when it is saved to disk
+        Args:
+            instance (Preference):  The prefence object to be serialized
+
+        Returns:
+            dict|None:  The serialized preference object or None if the object is not a preference
+        """
         if isinstance(instance, Preference):
             data = {'key': instance.key, 'value': instance.value, 'name': instance.name}
             return data

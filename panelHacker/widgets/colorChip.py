@@ -1,4 +1,3 @@
-import logging
 from PySide2 import QtWidgets, QtGui, QtCore
 
 from widgets import baseWidget
@@ -19,12 +18,18 @@ class ColorChip(baseWidget.BaseWidget):
         self.colorLabel = QtWidgets.QLabel(self.label)
 
     def initializeInterface(self):
+        """
+        This is used to add all the widgets to the main layout and set all interface items.
+        """
         self.masterLayout.addWidget(self.colorChip)
         self.masterLayout.addWidget(self.colorLabel)
         self.setLayout(self.masterLayout)
         self.masterLayout.setContentsMargins(0, 0, 0, 0)
 
     def initializeDefaults(self):
+        """
+        This will set all the initial values for all the widgets and self.
+        """
         self.colorChip.setFixedHeight(20)
         self.colorChip.setFixedWidth(20)
 
@@ -32,17 +37,25 @@ class ColorChip(baseWidget.BaseWidget):
             self.setColor(self.color)
 
     def initializeSignals(self):
-
+        """
+        This will connect all the signals for all widgets and self.
+        """
         self.colorChip.pressed.connect(self.getColor)
 
     def getColor(self):
-
+        """
+        This will open the color picker dialog and set the color of the chip
+        """
         colorPicker = QtWidgets.QColorDialog()
         colorPicker.colorSelected.connect(self.setColor)
         colorPicker.exec_()
 
     def setColor(self, color):
-
+        """
+        This will set the color of the chip to the given color
+        Args:
+            color (tuple(int, int, int)): RGB values to set the color to
+        """
         if isinstance(color, QtGui.QColor):
             color = [color.red(), color.green(), color.blue()]
 
@@ -57,7 +70,11 @@ class ColorChip(baseWidget.BaseWidget):
         self.colorChanged.emit(self.color)
 
     def mousePressEvent(self, event):
-
+        """
+        This will set the color of the chip to the default color if the right mouse button is pressed
+        Args:
+            event (QtGui.QMouseEvent):  Mouse event that triggered the function
+        """
         if event.button() == QtCore.Qt.RightButton:
             self.setColor(self.defaultColor)
         else:

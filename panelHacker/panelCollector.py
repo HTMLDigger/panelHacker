@@ -12,7 +12,17 @@ class _PanelCollector(QtCore.QObject):
         super(_PanelCollector, self).__init__()
 
     def eventFilter(self, widget, event):
+        """
+        Filters the events that are being sent to the widget.  This is used to determine when a new
+        panel has been created and is being shown to the parent then emits a signal to notify
+        the hacker that a new panel has been created
+        Args:
+            widget (QtWidgets.QWidget): Widget that is being filtered
+            event (QtCore.QEvent): Event that is being filtered
 
+        Returns:
+            bool:  If the event has been filtered successfully
+        """
         success = super(_PanelCollector, self).eventFilter(widget, event)
         if event.type() == QtCore.QEvent.ShowToParent:
             if widget.objectName():
@@ -38,7 +48,10 @@ class _PanelCollector(QtCore.QObject):
 
     @classmethod
     def initialized(cls):
-
+        """
+        Returns:
+            bool: If the panel collector has been initialized
+        """
         return cls._initialized
 
 

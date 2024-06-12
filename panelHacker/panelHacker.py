@@ -99,7 +99,9 @@ PanelHacker = _PanelHacker.globalInstance
 
 
 def start():
-
+    """
+    Starts the panel hacker by initializing the panel collector and installing an event filter
+    """
     if _PanelHacker.initialized() is False:
 
         panelCollector.PanelCollector().panelCollected.connect(PanelHacker().linkPanel)

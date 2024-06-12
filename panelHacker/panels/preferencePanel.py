@@ -8,10 +8,6 @@ class Preferences(basePanel.BasePanel):
     # This should be updated with all the required attributes for the preferences panel that you
     # are wanting to hack
     requiredAttributes = ['scriptEditorLayout']
-    # We set this to False so that the preferences are always reloaded when the panel is opened.
-    # Since the preference panel is not persistent if we cached it we would run into problems with
-    # certain widgets no longer being present
-    cacheWrapper = False
 
     def __init__(self, panel=None, hackerParent=None):
         super(Preferences, self).__init__(panel, hackerParent=hackerParent)
@@ -82,7 +78,12 @@ class Preferences(basePanel.BasePanel):
         self._preferencePath = None
 
     def initialize(self):
+        """
+        Initialize the preferences panel.  This will ensure that all the preferences are added to
+        the panel and that the preferences are initialized
 
+        Currently, this is only handling the script editor preferences
+        """
         if self.initialized:
             return
 
@@ -99,17 +100,35 @@ class Preferences(basePanel.BasePanel):
         self.initialized = True
 
     def preferenceUpdated(self, preference):
+        """
+        This is triggered when any preference is updated.  It will save the preference to disk and
+        emit the preferenceUpdated signal to ensure that whatever the preferences is connected to
+        is updated with the new preference
 
+        Args:
+            preference (Preference): The preference that was updated
+        """
         Globals.savePreference(preference)
         self.hackerParent.preferenceUpdated.emit(preference)
 
     @property
     def panelType(self):
+        """
+        Returns:
+            str: The type of the panel as defined in the globals
+        """
         return Globals.preferencesType
 
     @property
     def scriptEditorLayout(self):
+        """
+        Iterates over the panels layout to find the script editor layout.  This is hardcoded to
+        the script editor layout so if the layout changes then this will need to be updated.
 
+        # TODO: This should be changed to be more dynamic and not hardcoded
+        Returns:
+            QtWidgets.QLayout: The layout for the script editor section in the preferences panel
+        """
         if self._scriptEditorLayout is None:
             stackedLayout = self.panel.layout().itemAt(0).widget().layout()
             stackedWidget = stackedLayout.itemAt(1).widget()
@@ -117,19 +136,10 @@ class Preferences(basePanel.BasePanel):
 
         return self._scriptEditorLayout
 
-    def eventFilter(self, widget, event):
-
-        return super(Preferences, self).eventFilter(widget, event)
-
     @classmethod
     def regex(cls):
+        """
+        Returns:
+            str: The regex that will be used to find the preferences panel
+        """
         return str('.*preferencesdialog')
-
-    @classmethod
-    def reloadPreferences(cls, parentInstance=None):
-
-        instance = cls()
-        parentInstance = parentInstance or instance
-        instance.initialize()
-        for preference in instance.sePreferences:
-            parentInstance.updatePreferences(preference)

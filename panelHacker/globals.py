@@ -32,7 +32,10 @@ class _Globals(object):
 
     @property
     def preferencePath(self):
-
+        """
+        Returns:
+            str: Path to the preference file for the panel hacker
+        """
         if self._preferencePath is None:
             userDir = getUserDir()
             if not userDir:
@@ -44,7 +47,10 @@ class _Globals(object):
 
     @property
     def preferences(self):
-
+        """
+        Returns:
+            dict: Preferences for the panel hacker
+        """
         if self._preferences is None:
             if not os.path.exists(self.preferencePath):
                 self._preferences = dict()
@@ -59,7 +65,11 @@ class _Globals(object):
         return self._preferences
 
     def savePreference(self, preference):
-
+        """
+        Saves the preference to the preference file
+        Args:
+            preference(Preference): Preference to save
+        """
         preferences = copy.deepcopy(self.preferences)
         preferences[preference.key] = preference
         with open(self.preferencePath, 'w') as preferenceFile:

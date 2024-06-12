@@ -11,13 +11,28 @@ class KeyPressEventManager(QtCore.QObject):
         self.sequences = dict()
 
     def registerSequence(self, sequence, action, **kwargs):
+        """
+        Registers a key sequence to be used with the event filter
+        Args:
+            sequence (str): Key sequence to be registered ie: 'Ctrl+Shift+P'
+            action (callable): Function to be called when the key sequence is pressed
 
+        Kwargs:
+            kwargs will be passed along to the action function
+        """
         data = {'kwargs': kwargs,
                 'action': action}
         self.sequences[sequence.lower()] = data
 
     def eventFilter(self, obj, event):
-
+        """
+        Event filter that will be used to capture key press events and trigger the registered
+        actions if the key sequence is found.  If the key sequence is not found then the event
+        will be passed along to the default event filter
+        Args:
+            obj (object): Object that the event is being filtered for
+            event (QtCore.QEvent): Event that is being filtered
+        """
         if event.type() == QtCore.QEvent.KeyPress:
             keySequence = QtGui.QKeySequence(event.modifiers() | event.key())
             data = self.sequences.get(keySequence.toString().lower())

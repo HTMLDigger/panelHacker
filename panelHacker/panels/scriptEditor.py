@@ -6,7 +6,7 @@ from panels import basePanel
 from panels.preferences.scriptEditor import ColorPreference
 from globals import Globals
 from highlighters import syntaxPython
-from PySide2 import QtGui, QtWidgets, QtCore
+from PySide2 import QtGui, QtWidgets
 
 
 class ScriptEditor(basePanel.BasePanel):
@@ -28,7 +28,15 @@ class ScriptEditor(basePanel.BasePanel):
         self.eventFilter = keyPressEventManager.KeyPressEventManager()
 
     def initialize(self):
+        """
+        Initializes the panel and sets up the event filter for the panel, so we can override some
+        of the default nuke shortcuts for the script editor.
 
+        Shortcut List:
+            - Ctrl+V: Paste with normalization of spaces
+            - Ctrl+Shift+V: Paste without normalization of spaces
+            - Ctrl+/ : Toggle comment on selected text
+        """
         if self.initialized:
             return
 
@@ -51,17 +59,30 @@ class ScriptEditor(basePanel.BasePanel):
         self.initialized = True
 
     def updatePreferences(self, preference):
+        """
+        Before doing any updates this will ensure that the preference is a ColorPreference object
+        afterward this will update the preferences for the script editor
+        Args:
+            preference (dict, ColorPreference):  The preference that will be used for the update
+        """
         if isinstance(preference, dict):
             preference = ColorPreference(**preference)
         super(ScriptEditor, self).updatePreferences(preference)
 
     @property
     def panelType(self):
+        """
+        Returns:
+            str: The type of panel as defined in the globals
+        """
         return Globals.scriptEditorType
 
     @property
     def splitter(self):
-
+        """
+        Returns:
+            QtWidgets.QSplitter: The splitter that separates the script editor from the output
+        """
         if self._splitter is None:
             for child in self.panel.children():
                 if isinstance(child, QtWidgets.QSplitter):
@@ -71,7 +92,10 @@ class ScriptEditor(basePanel.BasePanel):
         
     @property
     def textEditor(self):
-
+        """
+        Returns:
+            QtWidgets.QPlainTextEdit: The text editor that is used for the script editor
+        """
         if self._textEditor is None:
             for child in self.splitter.children():
                 if isinstance(child, QtWidgets.QPlainTextEdit):
@@ -81,61 +105,99 @@ class ScriptEditor(basePanel.BasePanel):
 
     @property
     def previousScriptButton(self):
-
+        """
+        Returns:
+            QtWidgets.QPushButton: The button that will load the previous script
+        """
         return self.buttons.get('previousScript')
 
     @property
     def nextScriptButton(self):
-
+        """
+        Returns:
+            QtWidgets.QPushButton: The button that will load the next script
+        """
         return self.buttons.get('nextScript')
 
     @property
     def clearHistoryButton(self):
+        """
+        Returns:
+            QtWidgets.QPushButton: The button that will clear the history of the script editor
+        """
 
         return self.buttons.get('clearHistory')
 
     @property
     def sourceScriptButton(self):
-
+        """
+        Returns:
+            QtWidgets.QPushButton: The button that will source a script
+        """
         return self.buttons.get('sourceScript')
 
     @property
     def loadScriptButton(self):
-
+        """
+        Returns:
+            QtWidgets.QPushButton: The button that will load a script
+        """
         return self.buttons.get('loadScript')
 
     @property
     def saveScriptButton(self):
-
+        """
+        Returns:
+            QtWidgets.QPushButton: The button that will save a script
+        """
         return self.buttons.get('saveScript')
 
     @property
     def runScriptButton(self):
-
+        """
+        Returns:
+            QtWidgets.QPushButton: The button that will run the current script
+        """
         return self.buttons.get('runScript')
 
     @property
     def showInputButton(self):
-
+        """
+        Returns:
+            QtWidgets.QPushButton: The button that will show the input only
+        """
         return self.buttons.get('showInput')
 
     @property
     def showOutputButton(self):
-
+        """
+        Returns:
+            QtWidgets.QPushButton: The button that will show the output only
+        """
         return self.buttons.get('showOutput')
 
     @property
     def showAllButton(self):
-
+        """
+        Returns:
+            QtWidgets.QPushButton: The button that will show both input and output
+        """
         return self.buttons.get('showAll')
 
     @property
     def clearButton(self):
-
+        """
+        Returns:
+            QtWidgets.QPushButton: The button that will clear the output window
+        """
         return self.buttons.get('clear')
 
     @property
     def buttons(self):
+        """
+        Returns:
+            dict: Dictionary of all the buttons that are available in the script editor
+        """
 
         if self._buttons is None:
             self._buttons = dict()
@@ -183,7 +245,14 @@ class ScriptEditor(basePanel.BasePanel):
 
     @staticmethod
     def normalizeSpaces(text):
+        """
+        This will normalize the spaces in the given text by removing the smallest amount of spaces
+        Args:
+            text (str): The text that will have the spaces normalized
 
+        Returns:
+            str: The text with the spaces normalized
+        """
         lines = text.split('\n')
         smallSpace = None
 
@@ -203,7 +272,17 @@ class ScriptEditor(basePanel.BasePanel):
         return '\n'.join(lines)
 
     def paste(self, **kwargs):
+        """
+        This will paste the text from the clipboard into the text editor and format it as needed.
+        This is primarily useful for pasting code from other sources into the script editor since
+        they may not have the same formatting as the script editor
 
+        Kwargs:
+            normalizeSpace (bool):  If True then the spaces will be normalized before pasting
+
+        Returns:
+            bool: True if the paste was successful, False if it was not
+        """
         normalizeSpace = kwargs.get('normalizeSpace', False)
         clipboard = QtGui.QClipboard()
         currentText = ''
@@ -230,7 +309,12 @@ class ScriptEditor(basePanel.BasePanel):
         return
 
     def toggleComment(self):
+        """
+        This will toggle the comment on the selected text.  If the text is already commented then
+        the comment will be removed, if the text is not commented then the comment will be added
 
+        any blank lines will be ignored
+        """
         cursor = self.textEditor.textCursor()
 
         # Get selection stats
@@ -274,4 +358,8 @@ class ScriptEditor(basePanel.BasePanel):
 
     @classmethod
     def regex(cls):
+        """
+        Returns:
+            str: The regex that will be used to find the nuke panel that we want to interact with
+        """
         return str('.*scripteditor\.\d+')
